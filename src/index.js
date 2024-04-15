@@ -5,6 +5,7 @@ const { eventos } = require("./sockets/eventos");
 const { pausar } = require("./libs/funciones");
 const { data } = require("./data/data");
 const { entrenar } = require("./libs/algortimo1");
+const { log } = require("node:console");
 const app = express();
 const PORT = 4000;
 const server = createServer(app);
@@ -19,9 +20,11 @@ io.on("connection", async (socket) => {
   socket.on("graficar", (data) => {
     console.log(data);
   });
-  socket.on("graficas", async () => {
-
-    await entrenar(data, 0.7, 0.1, io);
+  socket.on("graficas", async (datosTraining) => {
+    // console.log(datosTraining);
+    const {data,rata,errorMaximo,iteracion} =datosTraining
+    // await entrenar(data, 0.01, 0.01, io,100);
+    await entrenar(data,rata,errorMaximo,io,iteracion)
   });
 });
 server.listen(PORT, () => {

@@ -1,15 +1,14 @@
 const { generarValoresAleatorios, pausar } = require("./funciones");
-async function entrenar(data, rata, erroMaximoPer, io) {
+async function entrenar(data, rata, erroMaximoPer, io,iteraciones) {
   const { entradas, salidas, numEntradas, numSalidas, numPatrones } = data;
   let w = data.W;
   let u = data.U;
   let ErrorIteracion = 1;
-  const ErroresItecarion = [];
+  let ErroresItecarion = [];
   let Si = 0; //sumatoria de las salidas * pesos
   let erroresLineales = [];
   let errorPatrones = [];
-  for (let m = 0; m < 1000; m++) {
-    //1000 es el numero de iteraciones
+  for (let m = 0; m < iteraciones; m++) {
     for (let h = 0; h < numPatrones; h++) {
       const salidasRed = [];
       for (let i = 0; i < numSalidas; i++) {
@@ -31,8 +30,6 @@ async function entrenar(data, rata, erroMaximoPer, io) {
       }
       ep = sumaErroreslineales / numSalidas; //calculamos el error en el patron 0
       errorPatrones.push(ep); //lo añadimos a una lista de errores en patrones
-      // aplicamos algoritmo de entrenamiento
-      // calculamos el nuevo peso (W)
       for (let i = 0; i < numSalidas; i++) {
         for (let j = 0; j < numEntradas; j++) {
           const nuevoPeso =
@@ -43,7 +40,6 @@ async function entrenar(data, rata, erroMaximoPer, io) {
         u[i] = +nuevoUmbral.toFixed(1); //actualizamos umbrals
       }
       erroresLineales = []; //reiniciamos los errores lineales
-      // calculamos el error de la iteracion
       let sumaErroresPatrones = 0;
       for (let i = 0; i < errorPatrones.length; i++) {
         sumaErroresPatrones += errorPatrones[i];
@@ -52,28 +48,31 @@ async function entrenar(data, rata, erroMaximoPer, io) {
     }
     ErroresItecarion.push(+ErrorIteracion);
     errorPatrones = [];
-    console.log(ErroresItecarion[m]);
+    // console.log(ErroresItecarion[m]);
     io.emit("graficas", {
       iteracion: `iteracion ${m}`,
       error: ErroresItecarion[m],
     });
-    if (+ErroresItecarion[m] <= +erroMaximoPer) {
+    if (+ErrorIteracion <= +erroMaximoPer) {
       console.log(
         "Entrenamiento completado correctamente ",
         m,
         "error ",
         ErroresItecarion[m]
       );
-      io.emit("graficas", { w: w, u: u });
-      break
+      io.emit("graficas", { w: w, u: u }); 
+      break;
     }
     if (+ErrorIteracion.toFixed(3) === +ErroresItecarion[m].toFixed(3)) {
       // Si los errores son iguales, generamos nuevos valores aleatorios para w y u
       w = generarValoresAleatorios(numEntradas, numSalidas);
       u = generarValoresAleatorios(1, numSalidas)[0]; // Solo necesitamos un umbral para cada salida
     }
-
-    await pausar(100);
+    if (m === iteraciones - 1 && ErrorIteracion > erroMaximoPer) {
+      ErroresItecarion = [];
+      m = -1;
+    }
+    await pausar(5);
   }
 }
 module.exports = { entrenar };
