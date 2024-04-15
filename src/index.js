@@ -7,7 +7,7 @@ const { data } = require("./data/data");
 const { entrenar } = require("./libs/algortimo1");
 const { log } = require("node:console");
 const app = express();
-const PORT = 4000;
+const PORT = 4000 | process.env.PORT;
 const server = createServer(app);
 const io = new Server(server, {
   cors: { origin: "*" },
