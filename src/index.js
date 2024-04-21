@@ -4,7 +4,7 @@ const { Server } = require("socket.io");
 const { eventos } = require("./sockets/eventos");
 const { pausar } = require("./libs/funciones");
 const { data } = require("./data/data");
-const { backPropagation } = require("./libs/algortimo2");
+const { iteraciones } = require("./libs/algortimo2");
 const { entrenar } = require("./libs/algortimo1");
 const app = express();
 const PORT = 4000 | process.env.PORT;
@@ -21,14 +21,15 @@ io.on("connection", async (socket) => {
     console.log(data);
   });
   socket.on("graficas", async (datosTraining) => {
-    // console.log(datosTraining);
+    console.log(datosTraining);
     const { data, rata, errorMaximo, iteracion } = datosTraining;
     // await entrenar(data, 0.01, 0.01, io,100);
     await entrenar(data, rata, errorMaximo, io, iteracion);
   });
 });
-backPropagation();
+iteraciones();
 server.listen(PORT, () => {
+  console.log("");
   console.log(`Running server on port ${PORT}`);
 });
 
