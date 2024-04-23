@@ -24,7 +24,9 @@ io.on("connection", async (socket) => {
     console.log(datosTraining);
     const { data, rata, errorMaximo, iteracion } = datosTraining;
     // await entrenar(data, 0.01, 0.01, io,100);
-    await entrenar(data, rata, errorMaximo, io, iteracion);
+    if (iteracion>0) {
+      await entrenar(data, rata, errorMaximo, io, iteracion);
+    }
   });
 });
 iteraciones();

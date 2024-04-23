@@ -26,7 +26,8 @@ const wNew = (
   erroresNol,
   fa,
   errL,
-  DxFactivacion
+  DxFactivacion,
+  u
 ) => {
   for (let c = 0; c < numeroCapas + 1; c++) {
     //numcapas
@@ -34,9 +35,9 @@ const wNew = (
       for (let i = 0; i < w[c].length; i++) {
         let sumW = 0;
         if (c === 0) {
-          console.log(
-            `${w[c][i][j]} +2 *${rata} *${erroresNol[c][j]} * ${salidas[c].h[j]} * ${copiaPatron[c][i]}`
-          );
+          // console.log(
+          //   `${w[c][i][j]} +2 *${rata} *${erroresNol[c][j]} * ${salidas[c].h[j]} * ${copiaPatron[c][i]}`
+          // );
           sumW =
             w[c][i][j] +
             2 *
@@ -45,26 +46,24 @@ const wNew = (
               DxFactivacion(fa[c], salidas[c].h[j].toFixed(5)) *
               copiaPatron[c][i];
           w[c][i][j] = +sumW.toFixed(5);
+
           // l++
         } else {
-          console.log("como entro suma ",sumW);
           if (salidas.length === c + 1) {
-            console.log(
-              `caps ${w[c][i][j]} +2 *${rata} * ${errL[j]} * ${
-                salidas[c - 1].h[i]
-              }`
-            );
+            // console.log(
+            //   `caps ${w[c][i][j]} +2 *${rata} * ${errL[j]} * ${
+            //     salidas[c - 1].h[i]
+            //   }`
+            // );
             sumW = w[c][i][j] + 2 * rata * errL[j];
             salidas[c - 1].h[i];
-            console.log("peso anterior,", w[c][i][j],);
             w[c][i][j] = +sumW.toFixed(5);
-            console.log("peso despues,", w[c][i][j]);
           } else {
-            console.log(
-              `cap2 ${w[c][i][j]} +2 *${rata} *${erroresNol[c][j]} * ${
-                salidas[c].h[j]
-              } * ${salidas[c - 1].h[i]}`
-            );
+            // console.log(
+            //   `cap2 ${w[c][i][j]} +2 *${rata} *${erroresNol[c][j]} * ${
+            //     salidas[c].h[j]
+            //   } * ${salidas[c - 1].h[i]}`
+            // );
             sumW =
               w[c][i][j] +
               2 *
@@ -77,7 +76,38 @@ const wNew = (
         }
       }
     }
-    console.log("nuevo peso =", w);
   }
+
+  for (let c = 0; c < numeroCapas + 1; c++) {
+    for (let j = 0; j < u[c].length; j++) {
+      let sumU = 0;
+
+      if (u.length - 1 === c) {
+        console.log("ultima capa", u[c]);
+        console.log(
+          `Us= ${u[c][j]} +2 * ${rata} * ${errL[j]} * 1`
+        );
+        sumU = u[c][j] + 2 * rata * errL[j] * 1;
+        u[c][j] = +sumU.toFixed(5);
+       
+      } else {
+        sumU =
+          u[c][j] +
+          2 *
+            rata *
+            erroresNol[c][j] *
+            DxFactivacion(fa[c], salidas[c].h[j].toFixed(5)) *
+            1;
+        console.log(
+          `U1= ${u[c][j]} +2 * ${rata} * ${erroresNol[c][j]} * ${+salidas[c].h[
+            j
+          ].toFixed(5)} * 1`
+        );
+        u[c][j] = +sumU.toFixed(5);
+      }
+      console.log("suma u2 ", sumU);
+    }
+  }
+  console.log("");
 };
 module.exports = { retornarUno, pausar, generarValoresAleatorios, wNew };

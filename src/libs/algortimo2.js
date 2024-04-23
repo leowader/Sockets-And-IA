@@ -1,6 +1,6 @@
 const { data2 } = require("../data/data");
 const { Factivacion, DxFactivacion } = require("./Factivacion");
-const {wNew}=require("./funciones")
+const { wNew } = require("./funciones");
 const { erroresNolineales } = require("./errorNol");
 const backPropagation = (data2, patron, yd, rata) => {
   const { numeroCapas, w, u, fa, numSalidas, numPatrones, entradas } = data2;
@@ -15,6 +15,8 @@ const backPropagation = (data2, patron, yd, rata) => {
   for (let it = 0; it < 1; it++) {
     //numpatrones
     let entradasCap = entradas;
+    console.log("patron presentado ", it, entradasCap[it]);
+
     H = [];
     salidas = [];
     for (let c = 0; c < numeroCapas + 1; c++) {
@@ -36,8 +38,6 @@ const backPropagation = (data2, patron, yd, rata) => {
     let yr = salidas[salidas.length - 1];
     let sumError = 0;
     console.log("yr =", yr);
-    console.log("yd: ", yd[it]);
-
     for (let i = 0; i < yr.h.length; i++) {
       errL.push(yd[it][i] - yr.h[i]); //calculamos el error lineal en el patron
       sumError += Math.abs(yd[it][i] - yr.h[i]);
@@ -47,12 +47,23 @@ const backPropagation = (data2, patron, yd, rata) => {
     console.log("ep: ", ep);
     console.log("las H", salidas);
     let erroresNol = erroresNolineales(w, numeroCapas, errL);
-    console.log("eee", erroresNol.reverse());
+    console.log("Errores no lineales", erroresNol.reverse());
     w.reverse();
-    console.log("loen", w[0][0]);
-    console.log("loen2", w[1][0]);
-    wNew(numeroCapas, w, salidas, copiaPatron, rata, erroresNol, fa, errL,DxFactivacion);
-    // console.log("ultimos pesos",w);
+    wNew(
+      numeroCapas,
+      w,
+      salidas,
+      copiaPatron,
+      rata,
+      erroresNol,
+      fa,
+      errL,
+      DxFactivacion,
+      u
+    );
+    console.log("ultimos pesos", w);
+    console.log("ultimos umbrales",u);
+    console.log("ep: ", ep);
   }
   return salidas;
 };

@@ -30,9 +30,7 @@ const DxFactivacion = (nameFncion, suma) => {
     return derivaSigmoide(suma);
   }
 
-  if (nameFncion === "tangente") {
-    console.log("llego a tan",suma);
-    
+  if (nameFncion === "tangente") {    
     return derivadaTanH(suma);
   }
   if (nameFncion === "seno") {
