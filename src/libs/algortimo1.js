@@ -50,9 +50,10 @@ async function entrenar(data, rata, erroMaximoPer, io,iteraciones) {
     errorPatrones = [];
     // console.log(ErroresItecarion[m]);
     io.emit("graficas", {
-      iteracion: `iteracion ${m}`,
-      error: ErroresItecarion[m],
+      iteracion: `iteracion ${m+1}`,
+      error: ErrorIteracion,
     });
+    console.log("ultimo error",ErrorIteracion,"it: ",m+1);
     if (+ErrorIteracion <= +erroMaximoPer) {
       console.log(
         "Entrenamiento completado correctamente ",
@@ -60,7 +61,7 @@ async function entrenar(data, rata, erroMaximoPer, io,iteraciones) {
         "error ",
         ErroresItecarion[m]
       );
-      io.emit("graficas", { w: w, u: u }); 
+      // io.emit("graficas", { w: w, u: u }); 
       break;
     }
     if (+ErrorIteracion.toFixed(3) === +ErroresItecarion[m].toFixed(3)) {
@@ -68,10 +69,7 @@ async function entrenar(data, rata, erroMaximoPer, io,iteraciones) {
       w = generarValoresAleatorios(numEntradas, numSalidas);
       u = generarValoresAleatorios(1, numSalidas)[0]; // Solo necesitamos un umbral para cada salida
     }
-    if (m === iteraciones - 1 && ErrorIteracion > erroMaximoPer) {
-      ErroresItecarion = [];
-      m = -1;
-    }
+
     await pausar(5);
   }
 }

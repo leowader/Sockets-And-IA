@@ -30,14 +30,17 @@ const wNew = (
   u
 ) => {
   for (let c = 0; c < numeroCapas + 1; c++) {
+    console.log("copia patron w",copiaPatron);
     //numcapas
     for (let j = 0; j < w[c][0].length; j++) {
       for (let i = 0; i < w[c].length; i++) {
         let sumW = 0;
         if (c === 0) {
-          // console.log(
-          //   `${w[c][i][j]} +2 *${rata} *${erroresNol[c][j]} * ${salidas[c].h[j]} * ${copiaPatron[c][i]}`
-          // );
+          console.log(
+            `w1 =${w[c][i][j]} +2 *${rata} *${erroresNol[c][j]} * ${salidas[c].h[j]} * ${copiaPatron[c][i]}`
+          );
+      console.log("");
+
           sumW =
             w[c][i][j] +
             2 *
@@ -50,20 +53,20 @@ const wNew = (
           // l++
         } else {
           if (salidas.length === c + 1) {
-            // console.log(
-            //   `caps ${w[c][i][j]} +2 *${rata} * ${errL[j]} * ${
-            //     salidas[c - 1].h[i]
-            //   }`
-            // );
+            console.log(
+              `ws ${w[c][i][j]} +2 *${rata} * ${errL[j]} * ${
+                salidas[c - 1].h[i]
+              }`
+            );
             sumW = w[c][i][j] + 2 * rata * errL[j];
             salidas[c - 1].h[i];
             w[c][i][j] = +sumW.toFixed(5);
           } else {
-            // console.log(
-            //   `cap2 ${w[c][i][j]} +2 *${rata} *${erroresNol[c][j]} * ${
-            //     salidas[c].h[j]
-            //   } * ${salidas[c - 1].h[i]}`
-            // );
+            console.log(
+              `w2 ${w[c][i][j]} +2 *${rata} *${erroresNol[c][j]} * ${
+                salidas[c].h[j]
+              } * ${salidas[c - 1].h[i]}`
+            );
             sumW =
               w[c][i][j] +
               2 *
@@ -73,8 +76,10 @@ const wNew = (
                 salidas[c - 1].h[i];
             w[c][i][j] = +sumW.toFixed(5);
           }
+
         }
       }
+
     }
   }
 
