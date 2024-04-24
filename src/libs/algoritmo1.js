@@ -1,5 +1,5 @@
 const { generarValoresAleatorios, pausar } = require("./funciones");
-async function entrenar(data, rata, erroMaximoPer, io,iteraciones) {
+async function entrenar(data, rata, erroMaximoPer, io, iteraciones) {
   const { entradas, salidas, numEntradas, numSalidas, numPatrones } = data;
   let w = data.W;
   let u = data.U;
@@ -50,10 +50,10 @@ async function entrenar(data, rata, erroMaximoPer, io,iteraciones) {
     errorPatrones = [];
     // console.log(ErroresItecarion[m]);
     io.emit("graficas", {
-      iteracion: `iteracion ${m+1}`,
+      iteracion: `iteracion ${m + 1}`,
       error: ErrorIteracion,
     });
-    console.log("ultimo error",ErrorIteracion,"it: ",m+1);
+    console.log("ultimo error", ErrorIteracion, "it: ", m + 1);
     if (+ErrorIteracion <= +erroMaximoPer) {
       console.log(
         "Entrenamiento completado correctamente ",
@@ -61,7 +61,7 @@ async function entrenar(data, rata, erroMaximoPer, io,iteraciones) {
         "error ",
         ErroresItecarion[m]
       );
-      // io.emit("graficas", { w: w, u: u }); 
+      // io.emit("graficas", { w: w, u: u });
       break;
     }
     if (+ErrorIteracion.toFixed(3) === +ErroresItecarion[m].toFixed(3)) {

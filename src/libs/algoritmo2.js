@@ -14,14 +14,10 @@ const backPropagation = (data2, rata) => {
   // letentradas =entradas;
   let ep = [];
   for (let it = 0; it < numPatrones; it++) {
-    console.log("mi patron",it, mipatron);
     //numpatrones
-    console.log("ententradas presentado ", it, mipatron[it]);
     H = [];
     salidasred = [];
     errL = [];
-    console.log("pesos init ", it, w);
-    console.log("error lineal init", it, errL);
     for (let c = 0; c < numeroCapas + 1; c++) {
       if (H.length > 0) {
         // entradas[it] = H;
@@ -34,24 +30,21 @@ const backPropagation = (data2, rata) => {
           h += mipatron[it][j] * w[c][j][i];
         }
         hi = h - u[c][i];
-        console.log(`e= ${mipatron}`);
         H.push(parseFloat(Factivacion(fa[c], hi).toFixed(5)));
       }
       salidasred.push({ h: H });
     }
     let yr = salidasred[salidasred.length - 1];
     let sumError = 0;
-    console.log("yr =", yr);
     for (let i = 0; i < yr.h.length; i++) {
       errL.push(salidas[it][i] - yr.h[i]); //calculamos el error lineal en elentradas
       sumError += Math.abs(salidas[it][i] - yr.h[i]);
     }
     ep.push(+(sumError / numSalidas).toFixed(5));
-    console.log("error lineal :", errL);
-    console.log("ep: ", ep);
-    console.log("las H", salidasred);
+    // console.log("error lineal :", errL);
+    // console.log("ep: ", ep);
     let erroresNol = erroresNolineales(w, numeroCapas, errL);
-    console.log("Errores no lineales", erroresNol.reverse());
+  erroresNol.reverse();
     w.reverse();
     wNew(
       numeroCapas,
@@ -65,25 +58,31 @@ const backPropagation = (data2, rata) => {
       DxFactivacion,
       u
     );
-    console.log("ultimos pesos", w);
-    console.log("ultimos umbrales", u);
-    console.log("ep: ", ep);
+    // console.log("ultimos pesos", w);
+    // console.log("ultimos umbrales", u);
+    // console.log("ep: ", ep);
   }
   let sumErIt = 0;
   for (let i = 0; i < ep.length; i++) {
     sumErIt += ep[i];
   }
-  console.log("error iteracion", +(sumErIt / ep.length).toFixed(5));
   return +(sumErIt / ep.length).toFixed(5);
 };
 const iteraciones = () => {
-  const { entradas } = data2;
-  console.log("ententradas", entradas);
-  const iteraciones = 3;//colocar numero de iteraciones aqui
+  const iteraciones = 5;//colocar numero de iteraciones aqui
+  const errorPermitido=0.1
+  const rata =0.1
   let erroresIteracion=[]
+  console.log("--ALGORITMO 02 BACKPROPAGATION--");
   for (let i = 0; i < iteraciones; i++) {
-    erroresIteracion.push(backPropagation(data2, 0.7))
+    let err=+backPropagation(data2, rata).toFixed(2)
+    erroresIteracion.push(err)
+    console.log(`Error iteracion ${i+1} = ${err}`);
+    if (+err.toFixed(2)<=+errorPermitido.toFixed(2)) {
+      console.log("Entrenamiento completado corrctamente");
+      break
+    }
   }
-  console.log("erors it: ",erroresIteracion);
+  console.log("erros it:",erroresIteracion);
 };
 module.exports = { iteraciones };

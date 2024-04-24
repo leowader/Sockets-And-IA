@@ -2,10 +2,8 @@ const express = require("express");
 const { createServer } = require("node:http");
 const { Server } = require("socket.io");
 const { eventos } = require("./sockets/eventos");
-const { pausar } = require("./libs/funciones");
-const { data } = require("./data/data");
-const { iteraciones } = require("./libs/algortimo2");
-const { entrenar } = require("./libs/algortimo1");
+const { iteraciones } = require("./libs/algoritmo2");
+const { entrenar } = require("./libs/algoritmo1");
 const app = express();
 const PORT = 4000 | process.env.PORT;
 const server = createServer(app);
@@ -23,8 +21,7 @@ io.on("connection", async (socket) => {
   socket.on("graficas", async (datosTraining) => {
     console.log(datosTraining);
     const { data, rata, errorMaximo, iteracion } = datosTraining;
-    // await entrenar(data, 0.01, 0.01, io,100);
-    if (iteracion>0) {
+    if (iteracion > 0 && data.salidas.length > 0) {
       await entrenar(data, rata, errorMaximo, io, iteracion);
     }
   });
@@ -34,5 +31,3 @@ server.listen(PORT, () => {
   console.log("");
   console.log(`Running server on port ${PORT}`);
 });
-
-// console.log(Math.sin(1.23 * Math.PI / 180));

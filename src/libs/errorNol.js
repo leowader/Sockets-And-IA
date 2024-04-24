@@ -4,7 +4,6 @@ const erroresNolineales = (w, numeroCapas, errL) => {
     let SumErrNo = 0;
     for (let c = 0; c < numeroCapas; c++) {
       errNo.push([]);
-      console.log("error nol i",errNo);
       for (let l = 0; l < w[c].length; l++) {
         SumErrNo = 0;
         for (let k = 0; k < w[c][0].length; k++) {
