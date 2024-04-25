@@ -4,6 +4,7 @@ const { Server } = require("socket.io");
 const { eventos } = require("./sockets/eventos");
 const { iteraciones } = require("./libs/algoritmo2");
 const { entrenar } = require("./libs/algoritmo1");
+require("./data/db.config")
 const app = express();
 const PORT = 4000 | process.env.PORT;
 const server = createServer(app);
@@ -26,8 +27,9 @@ io.on("connection", async (socket) => {
     }
   });
 });
+
 iteraciones();
 server.listen(PORT, () => {
-  console.log("");
+
   console.log(`Running server on port ${PORT}`);
 });

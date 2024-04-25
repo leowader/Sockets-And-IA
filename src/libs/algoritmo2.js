@@ -1,6 +1,10 @@
 const { data2 } = require("../data/data");
 const { Factivacion, DxFactivacion } = require("./Factivacion");
 const { wNew } = require("./funciones");
+const {
+  getConfigurations,
+  saveConfiguration,
+} = require("../data/repositoryConfiguration");
 const { erroresNolineales } = require("./errorNol");
 const backPropagation = (data2, rata) => {
   const { numeroCapas, w, u, fa, entradas, numSalidas, numPatrones, salidas } =
@@ -21,7 +25,7 @@ const backPropagation = (data2, rata) => {
     for (let c = 0; c < numeroCapas + 1; c++) {
       if (H.length > 0) {
         // entradas[it] = H;
-        mipatron[it]=H
+        mipatron[it] = H;
         H = [];
       }
       for (let i = 0; i < w[c][0].length; i++) {
@@ -41,10 +45,8 @@ const backPropagation = (data2, rata) => {
       sumError += Math.abs(salidas[it][i] - yr.h[i]);
     }
     ep.push(+(sumError / numSalidas).toFixed(5));
-    // console.log("error lineal :", errL);
-    // console.log("ep: ", ep);
     let erroresNol = erroresNolineales(w, numeroCapas, errL);
-  erroresNol.reverse();
+    erroresNol.reverse();
     w.reverse();
     wNew(
       numeroCapas,
@@ -58,31 +60,34 @@ const backPropagation = (data2, rata) => {
       DxFactivacion,
       u
     );
-    // console.log("ultimos pesos", w);
-    // console.log("ultimos umbrales", u);
-    // console.log("ep: ", ep);
   }
   let sumErIt = 0;
   for (let i = 0; i < ep.length; i++) {
     sumErIt += ep[i];
   }
-  return +(sumErIt / ep.length).toFixed(5);
+  return { error: sumErIt / ep.length, w: w, u: u };
 };
-const iteraciones = () => {
-  const iteraciones = 5;//colocar numero de iteraciones aqui
-  const errorPermitido=0.1
-  const rata =0.1
-  let erroresIteracion=[]
+const iteraciones = async () => {
+  const iteraciones = 1; //colocar numero de iteraciones aqui
+  const errorPermitido = 0.1;
+  const rata = 0.7;
+  let erroresIteracion = [];
   console.log("--ALGORITMO 02 BACKPROPAGATION--");
   for (let i = 0; i < iteraciones; i++) {
-    let err=+backPropagation(data2, rata).toFixed(2)
-    erroresIteracion.push(err)
-    console.log(`Error iteracion ${i+1} = ${err}`);
-    if (+err.toFixed(2)<=+errorPermitido.toFixed(2)) {
+    const { error, w, u } = backPropagation(data2, rata);
+    erroresIteracion.push(+error.toFixed(2));
+    if (+error.toFixed(2) <= errorPermitido) {
       console.log("Entrenamiento completado corrctamente");
-      break
+      console.log("ultimo w", w);
+      console.log("ultimo u", u);
+      await saveConfiguration({
+        w: w,
+        u: u,
+        numeroCapas: 2,
+      });
+      break;
     }
   }
-  console.log("erros it:",erroresIteracion);
+  console.log("erros it:", erroresIteracion);
 };
 module.exports = { iteraciones };
