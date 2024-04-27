@@ -1,3 +1,4 @@
+const path = require("path");
 function pausar(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -63,7 +64,7 @@ const wNew = (
       let sumU = 0;
       if (u.length - 1 === c) {
         sumU = u[c][j] + 2 * rata * errL[j] * 1;
-        u[c][j] =  redondear(sumU, 5);
+        u[c][j] = redondear(sumU, 5);
       } else {
         sumU =
           u[c][j] +
@@ -72,7 +73,7 @@ const wNew = (
             erroresNol[c][j] *
             DxFactivacion(fa[c], salidas[c].h[j]) *
             1;
-        u[c][j] =  redondear(sumU, 5);
+        u[c][j] = redondear(sumU, 5);
       }
     }
   }
@@ -80,4 +81,16 @@ const wNew = (
 function redondear(numero, decimales) {
   return Math.round(numero * Math.pow(10, decimales)) / Math.pow(10, decimales);
 }
-module.exports = { pausar, generarValoresAleatorios, wNew, redondear };
+function  guardarTxt (file,fs) {
+  const ruta = `./src/uploads/${file.originalname}`;
+  fs.renameSync(file.path, ruta);
+  const txtPath = path.join(__dirname, `../uploads/${file.originalname}`);
+  return txtPath;
+}
+module.exports = {
+  pausar,
+  generarValoresAleatorios,
+  wNew,
+  redondear,
+  guardarTxt,
+};
