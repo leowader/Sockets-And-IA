@@ -63,7 +63,7 @@ const wNew = (
       let sumU = 0;
       if (u.length - 1 === c) {
         sumU = u[c][j] + 2 * rata * errL[j] * 1;
-        u[c][j] = +sumU.toFixed(5);
+        u[c][j] = +sumU;
       } else {
         sumU =
           u[c][j] +
@@ -72,7 +72,7 @@ const wNew = (
             erroresNol[c][j] *
             DxFactivacion(fa[c], salidas[c].h[j].toFixed(5)) *
             1;
-        u[c][j] = +sumU.toFixed(5);
+        u[c][j] = +sumU;
       }
     }
   }

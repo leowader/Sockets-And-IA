@@ -2,7 +2,7 @@ const express = require("express");
 const { createServer } = require("node:http");
 const { Server } = require("socket.io");
 const { eventos } = require("./sockets/eventos");
-const { iteraciones } = require("./libs/algoritmo2");
+const { algoritmo02 } = require("./libs/algoritmo2");
 const { entrenar } = require("./libs/algoritmo1");
 require("./data/db.config")
 const app = express();
@@ -21,15 +21,16 @@ io.on("connection", async (socket) => {
   });
   socket.on("graficas", async (datosTraining) => {
     console.log(datosTraining);
-    const { data, rata, errorMaximo, iteracion } = datosTraining;
+    const { data, rata, errorMaximo, iteracion, algoritmo } = datosTraining;
     if (iteracion > 0 && data.salidas.length > 0) {
-      await entrenar(data, rata, errorMaximo, io, iteracion);
+      // await entrenar(data, rata, errorMaximo, io, iteracion);
+      if (algoritmo === 2) {
+        await algoritmo02(iteracion, errorMaximo, rata, data, io);
+      }
     }
   });
 });
 
-iteraciones();
 server.listen(PORT, () => {
-
   console.log(`Running server on port ${PORT}`);
 });
