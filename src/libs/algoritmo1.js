@@ -48,7 +48,6 @@ async function entrenar(data, rata, erroMaximoPer, io, iteraciones) {
     }
     ErroresItecarion.push(+ErrorIteracion);
     errorPatrones = [];
-    // console.log(ErroresItecarion[m]);
     io.emit("graficas", {
       iteracion: `iteracion ${m + 1}`,
       error: ErrorIteracion,

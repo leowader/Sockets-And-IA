@@ -20,17 +20,16 @@ io.on("connection", async (socket) => {
     console.log(data);
   });
   socket.on("graficas", async (datosTraining) => {
-    console.log(datosTraining);
     const { data, rata, errorMaximo, iteracion, algoritmo } = datosTraining;
     if (iteracion > 0 && data.salidas.length > 0) {
-      // await entrenar(data, rata, errorMaximo, io, iteracion);
       if (algoritmo === 2) {
         await algoritmo02(iteracion, errorMaximo, rata, data, io);
       }
+      // await entrenar(data, rata, errorMaximo, io, iteracion);
+
     }
   });
 });
-
 server.listen(PORT, () => {
   console.log(`Running server on port ${PORT}`);
 });
