@@ -1,17 +1,14 @@
 const { Factivacion } = require("../libs/Factivacion");
-const { getConfigurations } = require("../data/repositoryConfiguration");
-const simular = async (data) => {
-  const { entradas, numSalidas, numPatrones, salidas } = data;
+const {redondear}=require("./funciones")
+const simular = async (data, configuracion) => {
+  const { entradas, numPatrones } = data;
+  const { u, w, fa,numeroCapas } = configuracion;
   let h = 0;
   let H = [];
   let salidasred = [];
-  let numeroCapas = 3;
   const mipatron = entradas.slice();
-  const res = await getConfigurations();
-  let u = res[1].u;
-  let w = res[1].w;
-  let fa= res[1].fa
-  for (let p = 0; p < numPatrones; p++) {
+
+  for (let p = 0; p < entradas.length; p++) {
     H = [];
     for (let c = 0; c < numeroCapas + 1; c++) {
       if (H.length > 0) {
@@ -23,12 +20,12 @@ const simular = async (data) => {
         for (let j = 0; j < w[c].length; j++) {
           h += mipatron[p][j] * w[c][j][i];
         }
-        H.push(parseFloat(Factivacion(fa[c], (h - u[c][i])).toFixed(1)));
+        H.push(parseFloat(Factivacion(fa[c], h - u[c][i]).toFixed(0)));
       }
     }
     salidasred.push(H);
   }
 
-  return {data: salidasred}
+  return { data: salidasred };
 };
 module.exports = { simular };

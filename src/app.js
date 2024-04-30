@@ -3,12 +3,15 @@ const { createServer } = require("node:http");
 const { Server } = require("socket.io");
 const { eventos } = require("./sockets/eventos");
 const { algoritmo02 } = require("./libs/algoritmo2");
+const cors =require("cors")
 const express = require("express");
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: { origin: "*" },
 });
+app.use(cors())
+app.use(express.json());
 app.use("/",require("./routes/routes"))
 io.on("connection", async (socket) => {
   eventos(socket, io);
