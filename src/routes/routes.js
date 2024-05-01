@@ -9,31 +9,38 @@ const { data2 } = require("../data/data");
 const { getConfigurations } = require("../data/repositoryConfiguration");
 
 routes.post("/simular", async (req, res) => {
-
-  const { entradas, u, w, fa, numeroCapas } = req.body;
-  const configuracion = {
-    u,
-    w,
-    fa,
-    numeroCapas,
-  };
-  console.log(entradas);
-  const config = await getConfigurations();
-  console.log("simulacion",await simular(data2, configuracion));
-  res.send(await simular(data2, configuracion));
+  try {
+    const { entradas, u, w, fa, numeroCapas } = req.body;
+    const configuracion = {
+      u,
+      w,
+      fa,
+      numeroCapas,
+    };
+    console.log(entradas);
+    const config = await getConfigurations();
+    console.log("simulacion", await simular(data2, configuracion));
+    res.send(await simular(data2, configuracion));
+  } catch (error) {
+    res.send({ mensaje: `ocurrio un error ${error.message}` });
+  }
 });
 routes.get("/configurations", async (_, res) => {
   res.send({ data: await getConfigurations() });
 });
 routes.post("/leer/wyu", upload.single("file"), async (req, res) => {
-  const ruta = guardarTxt(req.file, fs);
-  fs.readFile(ruta, "utf-8", (err, data) => {
-    if (err) {
-      res.send({ error: err.message });
-    } else {
-      res.send({ data: JSON.parse(data) });
-    }
-  });
+  try {
+    const ruta = guardarTxt(req.file, fs);
+    fs.readFile(ruta, "utf-8", (err, data) => {
+      if (err) {
+        res.send({ error: err.message });
+      } else {
+        res.send({ data: JSON.parse(data) });
+      }
+    });
+  } catch (error) {
+    res.send({ mensaje: `ocurrio un error ${error.message}` });
+  }
 });
 
 routes.get("/", (_req, res) => {

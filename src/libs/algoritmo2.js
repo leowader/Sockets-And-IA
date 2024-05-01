@@ -74,12 +74,12 @@ const algoritmo02 = async (iteraciones, errorPermitido, rata, data, io) => {
         u: i === iteraciones - 1 ? u : "",
       });
       if (redondear(error,2) <= redondear(errorPermitido,2)) {
-        console.log(+error.toFixed(1), "<=", +errorPermitido.toFixed(1));
+        console.log(+error.toFixed(2), "<=", +errorPermitido.toFixed(2));
         console.log("Entrenamiento completado corrctamente");
         await saveConfiguration({
           w: w,
           u: u,
-          numeroCapas: 2,
+          numeroCapas: data.numeroCapas,
           fa: data.fa,
         });
         break;

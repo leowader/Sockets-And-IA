@@ -6,6 +6,9 @@ const { algoritmo02 } = require("./libs/algoritmo2");
 const cors = require("cors");
 const express = require("express");
 const app = express();
+const bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: '10mb'})); // Ajusta el límite según tus necesidades
+
 const server = createServer(app);
 const io = new Server(server, {
   cors: { origin: "*" },
@@ -14,7 +17,7 @@ const allowedOrigins = [
   "https://version-leo.vercel.app",
   "http://localhost:3000",
 ];
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+app.use(cors());
 app.use(express.json());
 app.use("/", require("./routes/routes"));
 io.on("connection", async (socket) => {
