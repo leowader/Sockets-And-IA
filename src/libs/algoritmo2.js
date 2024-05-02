@@ -1,5 +1,10 @@
 const { Factivacion, DxFactivacion } = require("./Factivacion");
-const { wNew, pausar, redondear } = require("./funciones");
+const {
+  wNew,
+  pausar,
+  redondear,
+  generarValoresAleatorios,
+} = require("./funciones");
 const { saveConfiguration } = require("../data/repositoryConfiguration");
 const { erroresNolineales } = require("./errorNol");
 const backPropagation = (data, rata) => {
@@ -61,31 +66,31 @@ const backPropagation = (data, rata) => {
   return { error: sumErIt / ep.length, w: w, u: u };
 };
 const algoritmo02 = async (iteraciones, errorPermitido, rata, data, io) => {
-    let erroresIteracion = [];
-    console.log("--ALGORITMO 02 BACKPROPAGATION--");
-    for (let i = 0; i < iteraciones; i++) {
-      const { error, w, u } = backPropagation(data, rata);
-      erroresIteracion.push(+error.toFixed(2));
-      console.log(`Itereacion ${i} error: ${error}`);
-      io.emit("graficas", {
-        iteracion: `iteracion ${i}`,
-        error: redondear(error,5),
-        w: i === iteraciones - 1 ? w : "",
-        u: i === iteraciones - 1 ? u : "",
-      });
-      if (redondear(error,2) <= redondear(errorPermitido,2)) {
-        console.log(+error.toFixed(2), "<=", +errorPermitido.toFixed(2));
-        console.log("Entrenamiento completado corrctamente");
-        await saveConfiguration({
-          w: w,
-          u: u,
-          numeroCapas: data.numeroCapas,
-          fa: data.fa,
-        });
-        break;
-      }
-      await pausar(0);
-    }
+  let erroresIteracion = [];
+  console.log("--ALGORITMO 02 BACKPROPAGATION--");
+  for (let i = 0; i < iteraciones; i++) {
+    const { error, w, u } = backPropagation(data, rata);
+    erroresIteracion.push(+error.toFixed(5));
+    console.log(`Itereacion ${i} error: ${error}`);
+    io.emit("graficas", {
+      iteracion: `iteracion ${i}`,
+      error: redondear(error, 5),
+      w: i === iteraciones - 1 ? w : "",
+      u: i === iteraciones - 1 ? u : "",
+    });
 
+    if (redondear(error, 2) <= redondear(errorPermitido, 2)) {
+      console.log(+error.toFixed(2), "<=", +errorPermitido.toFixed(2));
+      console.log("Entrenamiento completado corrctamente");
+      await saveConfiguration({
+        w: w,
+        u: u,
+        numeroCapas: data.numeroCapas,
+        fa: data.fa,
+      });
+      break;
+    }
+    await pausar(0);
+  }
 };
 module.exports = { algoritmo02 };

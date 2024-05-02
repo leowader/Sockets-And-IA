@@ -7,7 +7,7 @@ function generarValoresAleatorios(numEntradas, numSalidas) {
   for (let i = 0; i < numEntradas; i++) {
     const fila = [];
     for (let j = 0; j < numSalidas; j++) {
-      fila.push(+(Math.random() * 2 - 1).toFixed(1));
+      fila.push(+(Math.random() * 2 - 1).toFixed(5));
     }
     valores.push(fila);
   }
@@ -81,7 +81,7 @@ const wNew = (
 function redondear(numero, decimales) {
   return Math.round(numero * Math.pow(10, decimales)) / Math.pow(10, decimales);
 }
-function  guardarTxt (file,fs) {
+function guardarTxt(file, fs) {
   const ruta = `./src/uploads/${file.originalname}`;
   fs.renameSync(file.path, ruta);
   const txtPath = path.join(__dirname, `../uploads/${file.originalname}`);
@@ -94,3 +94,22 @@ module.exports = {
   redondear,
   guardarTxt,
 };
+// if (redondear(error, 5) === redondear(erroresIteracion[i - 1], 5)) {
+//   console.log("cambie wy u");
+//   for (let c = 0; c < data.numeroCapas + 1; c++) {
+//     if (c === 0) {
+//       w[c] = generarValoresAleatorios(data.numEntradas, w[c][0].length);
+//       u[c]=generarValoresAleatorios(1,w[c][0].length)[0]
+//     } else {
+//       if (c === w.length - 1) {
+
+//         w[c] =  generarValoresAleatorios(w[c - 1][0].length, w[c][0].length);
+//         u[c]=generarValoresAleatorios(1,w[c ][0].length)[0]
+//       } else {
+
+//         w[c] = generarValoresAleatorios(w[c - 1][0].length, w[c][0].length);
+//         u[c]=generarValoresAleatorios(1,w[c][0].length)[0]
+//       }
+//     }
+//   }
+// }
