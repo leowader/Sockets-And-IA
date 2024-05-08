@@ -13,30 +13,30 @@ const backPropagation = (data, rata) => {
   let h = 0;
   let hi = 0;
   let H = [];
-  let salidasred = [];
-  const mipatron = entradas.slice();
+  let salidasRed = [];
+  const patrones = entradas.slice();
   let errL = [];
   let ep = [];
   for (let p = 0; p < numPatrones; p++) {
     H = [];
-    salidasred = [];
+    salidasRed = [];
     errL = [];
     for (let c = 0; c < numeroCapas + 1; c++) {
       if (H.length > 0) {
-        mipatron[p] = H;
+        patrones[p] = H;
         H = [];
       }
       for (let i = 0; i < w[c][0].length; i++) {
         h = 0; //reiniciar suma
         for (let j = 0; j < w[c].length; j++) {
-          h += mipatron[p][j] * w[c][j][i];
+          h += patrones[p][j] * w[c][j][i];
         }
         hi = h - u[c][i];
         H.push(parseFloat(Factivacion(fa[c], hi)));
       }
-      salidasred.push({ h: H });
+      salidasRed.push({ h: H });
     }
-    let yr = salidasred[salidasred.length - 1];
+    let yr = salidasRed[salidasRed.length - 1];
     let sumError = 0;
     for (let i = 0; i < yr.h.length; i++) {
       errL.push(salidas[p][i] - yr.h[i]); //calculamos el error lineal capa de salidas
@@ -49,7 +49,7 @@ const backPropagation = (data, rata) => {
     wNew(
       numeroCapas,
       w,
-      salidasred,
+      salidasRed,
       entradas,
       rata,
       erroresNol,
@@ -79,8 +79,8 @@ const algoritmo02 = async (iteraciones, errorPermitido, rata, data, io) => {
       u: i === iteraciones - 1 ? u : "",
     });
 
-    if (redondear(error, 2) <= redondear(errorPermitido, 2)) {
-      console.log(+error.toFixed(2), "<=", +errorPermitido.toFixed(2));
+    if (redondear(error, 3) <= redondear(errorPermitido, 3)) {
+      console.log(redondear(error, 3), "<=", +errorPermitido.toFixed(3));
       console.log("Entrenamiento completado corrctamente");
       await saveConfiguration({
         w: w,
@@ -90,6 +90,7 @@ const algoritmo02 = async (iteraciones, errorPermitido, rata, data, io) => {
       });
       break;
     }
+
     await pausar(0);
   }
 };

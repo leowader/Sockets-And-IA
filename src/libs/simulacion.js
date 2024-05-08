@@ -20,7 +20,7 @@ const simular = async (data, configuracion) => {
         for (let j = 0; j < w[c].length; j++) {
           h += mipatron[p][j] * w[c][j][i];
         }
-        H.push(parseFloat(Factivacion(fa[c], h - u[c][i]).toFixed(0)));
+        H.push(parseFloat(+Factivacion(fa[c], h - u[c][i]).toFixed(0)));
       }
     }
     salidasred.push(H);
