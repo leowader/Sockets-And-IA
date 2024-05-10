@@ -63,6 +63,7 @@ const backPropagation = (data, rata) => {
   for (let i = 0; i < ep.length; i++) {
     sumErIt += ep[i];
   }
+  console.log("ultimo peso ", w[0]);
   return { error: sumErIt / ep.length, w: w, u: u };
 };
 const algoritmo02 = async (iteraciones, errorPermitido, rata, data, io) => {
@@ -78,7 +79,7 @@ const algoritmo02 = async (iteraciones, errorPermitido, rata, data, io) => {
       w: i === iteraciones - 1 ? w : "",
       u: i === iteraciones - 1 ? u : "",
     });
-
+    console.log("w", w[0]);
     if (redondear(error, 3) <= redondear(errorPermitido, 3)) {
       console.log(redondear(error, 3), "<=", +errorPermitido.toFixed(3));
       console.log("Entrenamiento completado corrctamente");
@@ -88,7 +89,9 @@ const algoritmo02 = async (iteraciones, errorPermitido, rata, data, io) => {
         numeroCapas: data.numeroCapas,
         fa: data.fa,
       });
+
       break;
+
     }
 
     await pausar(0);

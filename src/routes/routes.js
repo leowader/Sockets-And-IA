@@ -5,7 +5,6 @@ const fs = require("fs");
 const { guardarTxt } = require("../libs/funciones");
 const upload = multer({ dest: "./src/uploads/" });
 const { simular } = require("../libs/simulacion");
-const { data2 } = require("../data/data");
 const { getConfigurations } = require("../data/repositoryConfiguration");
 
 routes.post("/simular", async (req, res) => {
@@ -17,10 +16,9 @@ routes.post("/simular", async (req, res) => {
       fa,
       numeroCapas,
     };
-    console.log(entradas);
     const config = await getConfigurations();
-    console.log("simulacion", await simular(data2, configuracion));
-    res.send(await simular(data2, configuracion));
+    console.log("simulacion", await simular(entradas, configuracion));
+    res.send(await simular(entradas, configuracion));
   } catch (error) {
     res.send({ mensaje: `ocurrio un error ${error.message}` });
   }
