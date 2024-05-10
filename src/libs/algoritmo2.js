@@ -1,10 +1,5 @@
 const { Factivacion, DxFactivacion } = require("./Factivacion");
-const {
-  wNew,
-  pausar,
-  redondear,
-  generarValoresAleatorios,
-} = require("./funciones");
+const { wNew, pausar, redondear } = require("./funciones");
 const { saveConfiguration } = require("../data/repositoryConfiguration");
 const { erroresNolineales } = require("./errorNol");
 const backPropagation = (data, rata) => {
@@ -63,7 +58,6 @@ const backPropagation = (data, rata) => {
   for (let i = 0; i < ep.length; i++) {
     sumErIt += ep[i];
   }
-  console.log("ultimo peso ", w[0]);
   return { error: sumErIt / ep.length, w: w, u: u };
 };
 const algoritmo02 = async (iteraciones, errorPermitido, rata, data, io) => {
@@ -79,9 +73,8 @@ const algoritmo02 = async (iteraciones, errorPermitido, rata, data, io) => {
       w: i === iteraciones - 1 ? w : "",
       u: i === iteraciones - 1 ? u : "",
     });
-    console.log("w", w[0]);
-    if (redondear(error, 3) <= redondear(errorPermitido, 3)) {
-      console.log(redondear(error, 3), "<=", +errorPermitido.toFixed(3));
+    if (redondear(error, 2) <= redondear(errorPermitido, 2)) {
+      console.log(redondear(error, 2), "<=", +errorPermitido.toFixed(2));
       console.log("Entrenamiento completado corrctamente");
       await saveConfiguration({
         w: w,
@@ -91,9 +84,7 @@ const algoritmo02 = async (iteraciones, errorPermitido, rata, data, io) => {
       });
 
       break;
-
     }
-
     await pausar(0);
   }
 };
