@@ -16,6 +16,7 @@ const io = new Server(server, {
 const allowedOrigins = [
   "https://version-leo.vercel.app",
   "http://localhost:3000",
+  "https://9rsknq83-5173.use.devtunnels.ms/"
 ];
 app.use(cors());
 app.use(express.json());
