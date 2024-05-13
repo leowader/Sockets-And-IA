@@ -82,7 +82,8 @@ function redondear(numero, decimales) {
   return Math.round(numero * Math.pow(10, decimales)) / Math.pow(10, decimales);
 }
 function guardarTxt(file, fs) {
-  const ruta = `./src/uploads/${file.originalname}`;
+  const ruta = process.env.PR ? `./uploads/${file.originalname}`: `./src/uploads/${file.originalname}`;
+  console.log("ruta",ruta);
   fs.renameSync(file.path, ruta);
   const txtPath = path.join(__dirname, `../uploads/${file.originalname}`);
   return txtPath;
