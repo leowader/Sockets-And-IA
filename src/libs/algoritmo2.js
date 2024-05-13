@@ -1,8 +1,8 @@
 const { Factivacion, DxFactivacion } = require("./Factivacion");
-const { wNew, pausar, redondear } = require("./funciones");
+const { wNew, pausar, redondear, wNewCascada } = require("./funciones");
 const { saveConfiguration } = require("../data/repositoryConfiguration");
 const { erroresNolineales } = require("./errorNol");
-const backPropagation = (data, rata) => {
+const backPropagation = (data, rata, algoritmo) => {
   const { numeroCapas, w, u, fa, entradas, numSalidas, numPatrones, salidas } =
     data;
   let h = 0;
@@ -41,18 +41,33 @@ const backPropagation = (data, rata) => {
     let erroresNol = erroresNolineales(w, numeroCapas, errL);
     erroresNol.reverse();
     w.reverse();
-    wNew(
-      numeroCapas,
-      w,
-      salidasRed,
-      entradas,
-      rata,
-      erroresNol,
-      fa,
-      errL,
-      DxFactivacion,
-      u
-    );
+    if (algoritmo === "Backpropagation Primitivo") {
+      wNew(
+        numeroCapas,
+        w,
+        salidasRed,
+        entradas,
+        rata,
+        erroresNol,
+        fa,
+        errL,
+        DxFactivacion,
+        u
+      );
+    } else {
+      wNewCascada(
+        numeroCapas,
+        w,
+        salidasRed,
+        entradas,
+        rata,
+        erroresNol,
+        fa,
+        errL,
+        DxFactivacion,
+        u
+      );
+    }
   }
   let sumErIt = 0;
   for (let i = 0; i < ep.length; i++) {
@@ -60,11 +75,18 @@ const backPropagation = (data, rata) => {
   }
   return { error: sumErIt / ep.length, w: w, u: u };
 };
-const algoritmo02 = async (iteraciones, errorPermitido, rata, data, io) => {
+const algoritmo02 = async (
+  iteraciones,
+  errorPermitido,
+  rata,
+  data,
+  io,
+  algoritmo
+) => {
   let erroresIteracion = [];
   console.log("--ALGORITMO 02 BACKPROPAGATION--");
   for (let i = 0; i < iteraciones; i++) {
-    const { error, w, u } = backPropagation(data, rata);
+    const { error, w, u } = backPropagation(data, rata, algoritmo);
     erroresIteracion.push(+error.toFixed(5));
     console.log(`Itereacion ${i} error: ${error}`);
     io.emit("graficas", {

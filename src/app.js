@@ -29,9 +29,7 @@ io.on("connection", async (socket) => {
   socket.on("graficas", async (datosTraining) => {
     const { data, rata, errorMaximo, iteracion, algoritmo } = datosTraining;
     if (iteracion > 0 && data.salidas.length > 0) {
-      if (algoritmo === 2) {
-        await algoritmo02(iteracion, errorMaximo, rata, data, io);
-      }
+        await algoritmo02(iteracion, errorMaximo, rata, data, io,algoritmo);
       // await entrenar(data, rata, errorMaximo, io, iteracion);
     }
   });
