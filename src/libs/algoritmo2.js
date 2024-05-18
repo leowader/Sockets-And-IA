@@ -95,8 +95,8 @@ const algoritmo02 = async (
       w: i === iteraciones - 1 ? w : "",
       u: i === iteraciones - 1 ? u : "",
     });
-    if (redondear(error, 2) <= redondear(errorPermitido, 2)) {
-      console.log(redondear(error, 2), "<=", +errorPermitido.toFixed(2));
+    if (redondear(error, 3) <= redondear(errorPermitido, 3)) {
+      console.log(redondear(error, 3), "<=", +errorPermitido.toFixed(3));
       console.log("Entrenamiento completado corrctamente");
       await saveConfiguration({
         w: w,

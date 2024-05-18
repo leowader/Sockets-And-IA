@@ -23,11 +23,14 @@ const simular = async (entradas, configuracion) => {
     }
     salidasred.push(H);
   }
+  console.log("salidas antes",salidasred);
   for (let i = 0; i < salidasred.length; i++) {
     if (salidasred[i] <= 0) {
+      console.log("a",salidasred[0]);
       salidasred[i] = [0];
     }
   }
+  console.log("salidas despues",salidasred);
   return { data: salidasred };
 };
 module.exports = { simular };

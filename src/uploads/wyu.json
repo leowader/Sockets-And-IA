@@ -882,10 +882,5 @@
       0.22483
     ]
   ],
-  "fa": [
-    "gaussiana",
-    "tangente",
-    "sigmoide"
-  ],
   "numeroCapas": 2
 }
